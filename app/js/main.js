@@ -8,7 +8,7 @@
     var RepoListItem = React.createClass({
         render: function() {
             return (
-                <li key={this.props.id}>{this.props.name} - {this.props.stars}</li>
+                <li key={this.props.id}>{this.props.name} - Estrelas: {this.props.stargazers_count} - Forks: {this.props.forks_count}</li>
             );
         }
     });
@@ -27,8 +27,11 @@
                     return {
                         id: r.id,
                         name: r.name,
-                        stars: r.stars
+                        stargazers_count: r.stargazers_count,
+                        forks_count: r.forks_count
                     };
+                }).sort(function(a, b) {
+                    return parseInt(b.stargazers_count, 10) - parseInt(a.stargazers_count, 10);
                 });
 
                 this.setState({ repos: resultRepos });
@@ -38,7 +41,7 @@
             var self = this;
 
             var repos = this.state.repos.map(function(r) {
-                return <RepoListItem key={r.id} name={r.name} stars={r.stargazers_count} />
+                return <RepoListItem key={r.id} name={r.name} stargazers_count={r.stargazers_count} forks_count={r.forks_count} />
             });
 
             if(!repos.length){
@@ -48,10 +51,10 @@
             return (
                 <div className="container-fluid">
                     <div className="row">
-                            <h1>Repositórios {this.props.repoUser}</h1>
-                            <div className="col-sm-6">
-                                <div className="row">{repos}</div>
-                            </div>
+                        <h1 className="align-center">Repositórios {this.props.repoUser}</h1>
+                        <div className="col-sm-6">
+                            <div className="row">{repos}</div>
+                        </div>
                     </div>
                 </div>
             );
