@@ -8,15 +8,13 @@
     var RepoListItem = React.createClass({
         render: function() {
             return (
-                <li key={this.props.id}>{this.props.name} - Estrelas: {this.props.stargazers_count} - Forks: {this.props.forks_count}</li>
+                <li key={this.props.id} className="list-group-item">{this.props.name} - Estrelas: {this.props.stargazers_count} - Forks: {this.props.forks_count}</li>
             );
         }
     });
 
     var RepoList = React.createClass({
-        getInitialState: function(){
-            // The pictures array will be populated via AJAX, and
-
+        getInitialState: function() {
             return { repos: [] };
         },
         componentDidMount: function() {
@@ -51,10 +49,26 @@
             return (
                 <div className="container-fluid">
                     <div className="row">
-                        <h1 className="align-center">Repositórios {this.props.repoUser}</h1>
-                        <div className="col-sm-6">
-                            <div className="row">{repos}</div>
+                        <h1>Repositórios {this.props.repoUser}</h1>
+                        <div className="col-sm-6 blue">
+                            <div className="row">
+                                <div className="col-sm-offset-6 col-sm-6 list-repos">
+                                    <div className="row">
+                                        <ul className="list-group">{repos}</ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                        <div className="col-sm-6 white">
+                            <div className="row">
+                                <div className="col-sm-6 info-repos">
+                                    <div className="row">
+                                        Ninja
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             );
