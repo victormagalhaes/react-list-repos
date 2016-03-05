@@ -31,9 +31,9 @@ gulp.task('serve', ['sass', 'browserify', 'copy'], function() {
     });
 
     gulp.watch("app/scss/*.scss", ['sass']);
-    gulp.watch("app/js/*.js", ['browserify']);
+    gulp.watch("app/js/main.js", ['browserify']);
     gulp.watch("app/*.html", ['copy']);
-    gulp.watch("app/*.html").on('change', browserSync.reload);
+    gulp.watch(["app/*.html", "app/scss/*.scss", "app/js/main.js"]).on('change', browserSync.reload);
 });
 
 gulp.task('default', ['serve']);
