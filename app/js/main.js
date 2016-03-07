@@ -42,7 +42,7 @@
                         forks_count: r.forks_count,
                     };
                 }).sort(function(a, b) {
-                    // Descending Sort from stars count
+                    // Descending sort from stars count
                     return parseInt(b.stargazers_count, 10) - parseInt(a.stargazers_count, 10);
                 });
 

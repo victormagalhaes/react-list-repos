@@ -21,6 +21,7 @@ h1 {
 .list-repos {
     min-height: 100vh;
     color: #fff;
+    display: block;
 
     .fa-spinner {
         margin-top: 50px;
@@ -77,7 +78,7 @@ h2 {
     .fa-github {
         font-size: 500px;
         display: block;
-        margin: 50px;
+        margin-top: 50px;
         color: #dedede;
         text-align: center;
     }
@@ -86,5 +87,16 @@ h2 {
 @media (max-width: $screen-sm) {
     h1, h2 {
         text-align: center;
+    }
+
+    .list-repos {
+        min-height: auto;
+    }
+
+    .info-repos {
+        min-height: auto;
+        .fa-github {
+            font-size: 200px;
+        }
     }
 }
