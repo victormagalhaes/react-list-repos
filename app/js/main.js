@@ -5,13 +5,34 @@
     var ReactDOM = require('react-dom');
     var bootstrap = require('bootstrap');
 
+    var CommitsPaginationButton = React.createClass({
+        render: function() {
+            return (
+                <button type="button" className="btn btn-primary btn-lg center-block">Carregar mais</button>
+            );
+        }
+
+    });
+
     var CommitList = React.createClass({
         render: function() {
             return (
-                <li key={this.props.sha} className="commit-item">
-
-                    {this.props.commit.author.name}: {this.props.commit.message}
-                </li>
+                <div key={this.props.sha} className="media commit-item">
+                    <div className="media-left media-middle">
+                        <a href={this.props.author.url}>
+                            <img className="media-object img-rounded" src={this.props.author.avatar_url} alt={this.props.commit.author.name}/>
+                        </a>
+                    </div>
+                    <div className="media-body">
+                        <h4 className="media-heading">
+                            <a href={this.props.url}>{this.props.commit.author.name}</a><div className="pull-right"><small>{this.props.commit.author.date}</small></div>
+                        </h4>
+                        <div className="content-commit">
+                            <div className="sha">#{this.props.sha}</div>
+                            <div className="message">{this.props.commit.message}</div>
+                        </div>
+                    </div>
+                </div>
             );
         }
     });
@@ -39,7 +60,7 @@
 
     var RepoList = React.createClass({
         getInitialState: function() {
-            return { repos: [], info: [], commits: [] };
+            return { repos: [], info: [], commits: [], commitsPage: 1 };
         },
         componentDidMount: function() {
             var url = 'https://api.github.com/users/' + this.props.repoUser + '/repos?per_page=1000';
@@ -61,9 +82,23 @@
                 this.setState({ repos: resultRepos, info: [], commits: [] });
             }.bind(this));
         },
-        repoClick: function(id, urlCommits) {
-            var clickedInfo = [];
+        getCommits: function(urlCommits, page) {
             var commitList = [];
+            var page = this.state.page;
+
+            urlCommits += "?" + page + "&per_page=20";
+
+            this.serverRequest = $.get(urlCommits, function(result) {
+                result.forEach(function(c) {
+                    commitList.push(c);
+                });
+
+                $('.pagination-commits').removeClass('hidden');
+                this.setState({ commits: commitList, commitsPage: page++ });
+            }.bind(this));
+        },
+        repoClick: function(id, urlCommits, page) {
+            var clickedInfo = [];
 
             this.state.repos.forEach(function(r) {
                 if (r.id == id) {
@@ -71,13 +106,7 @@
                 }
             });
 
-            this.serverRequest = $.get(urlCommits, function(result) {
-                result.forEach(function(c) {
-                    commitList.push(c);
-                });
-
-                this.setState({ commits: commitList});
-            }.bind(this));
+            this.getCommits(urlCommits, page);
 
             this.setState({ info: clickedInfo });
         },
@@ -116,12 +145,14 @@
             // And commit's list
             var commits = this.state.commits.map(function(c) {
                 return <CommitList
+                        key={c.sha}
                         sha={c.sha}
                         commit={c.commit}
+                        author={c.author}
                         url={c.url} />
             });
             if(!commits.length){
-                commits = <i className="fa fa-spin fa-spinner"></i>;
+                commits = "";
             }
 
             return (
@@ -139,9 +170,14 @@
                         </div>
                         <div className="col-sm-8 white">
                             <div className="row">
-                                <h2 className="col-sm-11">{infoName}</h2>
-                                <div className="col-sm-11 info-repos">{info}</div>
-                                <div className="col-sm-11 commits">{commits}</div>
+                                <div className="col-sm-11">
+                                    <h2>{infoName}</h2>
+                                    <div className="info-repos">{info}</div>
+                                    <div className="commits">{commits}</div>
+                                    <div className="pagination-commits hidden">
+                                        <CommitsPaginationButton page={this.state.page}/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

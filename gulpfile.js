@@ -35,10 +35,10 @@ gulp.task('serve', ['sass', 'browserify', 'copy', 'fonts'], function() {
         server: "./dist"
     });
 
+    gulp.watch("app/*.html").on('change', browserSync.reload);
     gulp.watch("app/scss/*.scss", ['sass', 'fonts']);
     gulp.watch("app/js/main.js", ['browserify']);
     gulp.watch("app/*.html", ['copy']);
-    gulp.watch(["app/*.html", "app/scss/*.scss", "app/js/main.js"]).on('change', browserSync.reload);
 });
 
 gulp.task('default', ['serve']);
