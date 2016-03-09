@@ -2,6 +2,7 @@
 
 Requirements:
 * Node.js
+* Http-server (https://www.npmjs.com/package/http-server)
 
 ### Installation
 
@@ -21,6 +22,13 @@ $ gulp serve
 ```sh
 $ cd dist
 $ http-server -p [PORT_NUMBER]
+```
+
+or you could use Python's SimpleHTTPServer
+
+```sh
+$ cd dist
+$ python -m SimpleHTTPServer [PORT_NUMBER]
 ```
 
 Open your browser on http://localhost:[PORT_NUMBER] and enjoy =)
