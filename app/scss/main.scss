@@ -5,6 +5,7 @@ $color-1: #1e90ff;
 $color-2: #ffed00;
 
 body {
+    min-height: 100%;
     .blue {
         background-color: $color-1;
     }
@@ -41,6 +42,17 @@ h1 {
         cursor: pointer;
         border-right: 0;
         text-transform: uppercase;
+        padding: 0;
+
+        a {
+            padding: 10px 15px;
+            color: #fff;
+            display: block;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
 
         &:hover {
             background-color: darken($color-1, 15%);
@@ -58,7 +70,7 @@ h2 {
 }
 
 .info-repos {
-    padding: 20px;
+    padding: 20px 0 0 20px;
     border-top: 3px solid #dedede;
 
     h3 {

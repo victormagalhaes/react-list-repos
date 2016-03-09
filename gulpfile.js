@@ -2,11 +2,10 @@ var gulp = require('gulp');
 var browserify = require('gulp-browserify');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
-var browserSync = require('browser-sync').create();
 var sass = require('gulp-sass');
 
 gulp.task('browserify', function() {
-    return gulp.src('app/js/main.js')
+    return gulp.src('app/js/*.js')
         .pipe(browserify({transform:'reactify'}))
         .pipe(uglify())
         .pipe(concat('main.js'))
@@ -16,8 +15,7 @@ gulp.task('browserify', function() {
 gulp.task('sass', function() {
     return gulp.src("app/scss/*.scss")
         .pipe(sass())
-        .pipe(gulp.dest("dist/css"))
-        .pipe(browserSync.stream());
+        .pipe(gulp.dest("dist/css"));
 });
 
 gulp.task('copy', function() {
@@ -31,13 +29,8 @@ gulp.task('fonts', function() {
 })
 
 gulp.task('serve', ['sass', 'browserify', 'copy', 'fonts'], function() {
-    browserSync.init({
-        server: "./dist"
-    });
-
-    gulp.watch("app/*.html").on('change', browserSync.reload);
     gulp.watch("app/scss/*.scss", ['sass', 'fonts']);
-    gulp.watch("app/js/main.js", ['browserify']);
+    gulp.watch("app/js/*.js", ['browserify']);
     gulp.watch("app/*.html", ['copy']);
 });
 
