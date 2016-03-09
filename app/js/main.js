@@ -60,7 +60,7 @@
 
     var RepoList = React.createClass({
         getInitialState: function() {
-            return { repos: [], info: [], commits: [], commitsPage: 1 };
+            return { repos: [], info: [], commits: [] };
         },
         componentDidMount: function() {
             var url = 'https://api.github.com/users/' + this.props.repoUser + '/repos?per_page=1000';
@@ -82,11 +82,10 @@
                 this.setState({ repos: resultRepos, info: [], commits: [] });
             }.bind(this));
         },
-        getCommits: function(urlCommits, page) {
+        getCommits: function(urlCommits) {
             var commitList = [];
-            var page = this.state.page;
 
-            urlCommits += "?" + page + "&per_page=20";
+            urlCommits += "?&per_page=20";
 
             this.serverRequest = $.get(urlCommits, function(result) {
                 result.forEach(function(c) {
@@ -94,10 +93,10 @@
                 });
 
                 $('.pagination-commits').removeClass('hidden');
-                this.setState({ commits: commitList, commitsPage: page++ });
+                this.setState({ commits: commitList });
             }.bind(this));
         },
-        repoClick: function(id, urlCommits, page) {
+        repoClick: function(id, urlCommits) {
             var clickedInfo = [];
 
             this.state.repos.forEach(function(r) {
@@ -106,7 +105,7 @@
                 }
             });
 
-            this.getCommits(urlCommits, page);
+            this.getCommits(urlCommits);
 
             this.setState({ info: clickedInfo });
         },
@@ -175,7 +174,7 @@
                                     <div className="info-repos">{info}</div>
                                     <div className="commits">{commits}</div>
                                     <div className="pagination-commits hidden">
-                                        <CommitsPaginationButton page={this.state.page}/>
+                                        <CommitsPaginationButton />
                                     </div>
                                 </div>
                             </div>
